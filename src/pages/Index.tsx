@@ -5,6 +5,7 @@ import Icon from '@/components/ui/icon';
 import BotMarketplace from '@/components/BotMarketplace';
 import BotConstructor from '@/components/BotConstructor';
 import MyBots from '@/components/MyBots';
+import BotTester from '@/components/BotTester';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('marketplace');
@@ -44,9 +45,10 @@ const Index = () => {
           <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-3 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
             Создавайте умных ботов за минуты
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mb-6">
             Платформа для разработки чат-ботов, ИИ-агентов и ИИ-сотрудников для социальных сетей и бизнеса
           </p>
+          <BotTester />
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">

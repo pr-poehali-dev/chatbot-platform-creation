@@ -57,6 +57,47 @@ const TelegramIntegration = () => {
     }
   };
 
+  const handleSetupWebhook = async () => {
+    setLoading(true);
+    const webhookUrl = 'https://functions.poehali.dev/28e4e6a0-60c6-42fa-9b4c-b40df0a1762e';
+    
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'set_webhook',
+          webhook_url: webhookUrl
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        toast({
+          title: 'Webhook настроен!',
+          description: 'Бот теперь получает сообщения и отвечает автоматически',
+        });
+      } else {
+        toast({
+          title: 'Ошибка',
+          description: data.error || 'Не удалось настроить webhook',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Проблема с настройкой webhook',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSendMessage = async () => {
     if (!chatId || !message) {
       toast({
@@ -185,6 +226,36 @@ const TelegramIntegration = () => {
                   </div>
                 </div>
               )}
+
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 md:p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <Icon name="Zap" size={20} className="text-purple-600 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold text-purple-900">Автоответы включены!</p>
+                    <p className="text-sm text-purple-800 mt-1">
+                      Настройте webhook для автоматических ответов на сообщения пользователей
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  onClick={handleSetupWebhook} 
+                  disabled={loading}
+                  variant="outline"
+                  className="w-full border-purple-300 hover:bg-purple-100"
+                >
+                  {loading ? (
+                    <>
+                      <Icon name="Loader2" size={18} className="mr-2 animate-spin" />
+                      Настройка...
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="Link" size={18} className="mr-2" />
+                      Настроить Webhook
+                    </>
+                  )}
+                </Button>
+              </div>
 
               <div className="space-y-3">
                 <h4 className="font-semibold text-sm">Тестовая отправка сообщения</h4>

@@ -1,0 +1,37 @@
+{
+  "tests": [
+    {
+      "name": "Test OPTIONS for CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": "",
+      "bodyMatcher": "exact"
+    },
+    {
+      "name": "Test webhook POST",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "update_id": 123456,
+        "message": {
+          "message_id": 1,
+          "from": {
+            "id": 123456789,
+            "first_name": "Test"
+          },
+          "chat": {
+            "id": 123456789,
+            "type": "private"
+          },
+          "text": "Привет"
+        }
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "ok": true
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
