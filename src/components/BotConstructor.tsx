@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
+import TelegramIntegration from '@/components/TelegramIntegration';
 
 interface ScenarioNode {
   id: string;
@@ -129,24 +130,32 @@ const BotConstructor = () => {
           </CardContent>
         </Card>
 
-        <Card className="hidden lg:block">
-          <CardHeader>
-            <CardTitle className="text-sm md:text-base">Элементы сценария</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {nodeTypes.map((node) => (
-              <Button
-                key={node.type}
-                variant="outline"
-                className="w-full justify-start text-sm"
-                onClick={() => handleAddNode(node.type)}
-              >
-                <Icon name={node.icon as any} size={16} className="mr-2" />
-                {node.label}
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
+        <div className="hidden lg:block space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm md:text-base">Элементы сценария</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {nodeTypes.map((node) => (
+                <Button
+                  key={node.type}
+                  variant="outline"
+                  className="w-full justify-start text-sm"
+                  onClick={() => handleAddNode(node.type)}
+                >
+                  <Icon name={node.icon as any} size={16} className="mr-2" />
+                  {node.label}
+                </Button>
+              ))}
+            </CardContent>
+          </Card>
+
+          {platform === 'telegram' && (
+            <div className="mt-4">
+              <TelegramIntegration />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="lg:col-span-2">

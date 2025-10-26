@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
+import TelegramIntegration from '@/components/TelegramIntegration';
 
 const BotDetails = () => {
   const { id } = useParams();
@@ -221,10 +222,12 @@ const BotDetails = () => {
           </TabsContent>
 
           <TabsContent value="integrations" className="space-y-6">
+            <TelegramIntegration />
+            
             <Card>
               <CardHeader>
-                <CardTitle>API интеграции</CardTitle>
-                <CardDescription>Подключите социальные сети и мессенджеры</CardDescription>
+                <CardTitle>Другие интеграции</CardTitle>
+                <CardDescription>Подключите дополнительные платформы</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {apiIntegrations.map((api, index) => (
