@@ -60,15 +60,15 @@ const BotConstructor = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-1 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="lg:col-span-1 space-y-4 md:space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Settings" size={20} />
+            <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+              <Icon name="Settings" size={18} className="md:w-5 md:h-5" />
               Настройки бота
             </CardTitle>
-            <CardDescription>Основные параметры вашего ИИ-агента</CardDescription>
+            <CardDescription className="text-xs md:text-sm">Основные параметры вашего ИИ-агента</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -129,16 +129,16 @@ const BotConstructor = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hidden lg:block">
           <CardHeader>
-            <CardTitle className="text-sm">Элементы сценария</CardTitle>
+            <CardTitle className="text-sm md:text-base">Элементы сценария</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {nodeTypes.map((node) => (
               <Button
                 key={node.type}
                 variant="outline"
-                className="w-full justify-start"
+                className="w-full justify-start text-sm"
                 onClick={() => handleAddNode(node.type)}
               >
                 <Icon name={node.icon as any} size={16} className="mr-2" />
@@ -152,27 +152,43 @@ const BotConstructor = () => {
       <div className="lg:col-span-2">
         <Card className="h-full">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Workflow" size={20} />
+            <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+              <Icon name="Workflow" size={18} className="md:w-5 md:h-5" />
               Визуальный конструктор
             </CardTitle>
-            <CardDescription>Создайте сценарий взаимодействия с пользователем</CardDescription>
+            <CardDescription className="text-xs md:text-sm">Создайте сценарий взаимодействия с пользователем</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="visual" className="w-full">
               <TabsList className="grid w-full max-w-md grid-cols-2">
-                <TabsTrigger value="visual">
-                  <Icon name="Network" size={16} className="mr-2" />
+                <TabsTrigger value="visual" className="text-xs md:text-sm">
+                  <Icon name="Network" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
                   Визуально
                 </TabsTrigger>
-                <TabsTrigger value="code">
-                  <Icon name="Code" size={16} className="mr-2" />
+                <TabsTrigger value="code" className="text-xs md:text-sm">
+                  <Icon name="Code" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
                   Код
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="visual" className="mt-6">
-                <div className="border-2 border-dashed rounded-lg p-8 min-h-[500px] bg-gradient-to-br from-gray-50 to-white">
+              <TabsContent value="visual" className="mt-4 md:mt-6">
+                <div className="border-2 border-dashed rounded-lg p-4 md:p-8 min-h-[400px] md:min-h-[500px] bg-gradient-to-br from-gray-50 to-white">
+                  <div className="lg:hidden mb-4">
+                    <div className="grid grid-cols-2 gap-2">
+                      {nodeTypes.map((node) => (
+                        <Button
+                          key={node.type}
+                          variant="outline"
+                          size="sm"
+                          className="justify-start text-xs"
+                          onClick={() => handleAddNode(node.type)}
+                        >
+                          <Icon name={node.icon as any} size={14} className="mr-1" />
+                          {node.label}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
                   <div className="space-y-4">
                     {scenarios.map((node, index) => (
                       <div

@@ -112,19 +112,19 @@ const MyBots = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h3 className="text-2xl font-bold">Мои боты</h3>
-          <p className="text-muted-foreground">Управляйте своими ИИ-агентами</p>
+          <h3 className="text-xl md:text-2xl font-bold">Мои боты</h3>
+          <p className="text-sm md:text-base text-muted-foreground">Управляйте своими ИИ-агентами</p>
         </div>
-        <Button size="lg">
+        <Button size="default" className="w-full sm:w-auto">
           <Icon name="Plus" size={18} className="mr-2" />
           Создать бота
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {bots.map((bot, index) => (
           <Card 
             key={bot.id}

@@ -25,14 +25,14 @@ const Index = () => {
                 <p className="text-xs text-muted-foreground">Платформа для создания ИИ-агентов</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm">
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" className="hidden md:flex">
                 <Icon name="Bell" size={18} className="mr-2" />
-                Уведомления
+                <span className="hidden lg:inline">Уведомления</span>
               </Button>
               <Button variant="outline" size="sm">
-                <Icon name="User" size={18} className="mr-2" />
-                Профиль
+                <Icon name="User" size={18} className="md:mr-2" />
+                <span className="hidden md:inline">Профиль</span>
               </Button>
             </div>
           </div>
@@ -40,28 +40,31 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
+        <div className="mb-6 md:mb-8 animate-fade-in">
+          <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-3 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
             Создавайте умных ботов за минуты
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
             Платформа для разработки чат-ботов, ИИ-агентов и ИИ-сотрудников для социальных сетей и бизнеса
           </p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-3 h-auto p-1.5">
-            <TabsTrigger value="marketplace" className="flex items-center gap-2 py-3">
-              <Icon name="Store" size={18} />
-              <span>Маркетплейс</span>
+          <TabsList className="grid w-full max-w-2xl grid-cols-3 h-auto p-1">
+            <TabsTrigger value="marketplace" className="flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="Store" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Маркетплейс</span>
+              <span className="sm:hidden">Магазин</span>
             </TabsTrigger>
-            <TabsTrigger value="constructor" className="flex items-center gap-2 py-3">
-              <Icon name="Boxes" size={18} />
-              <span>Конструктор</span>
+            <TabsTrigger value="constructor" className="flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="Boxes" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Конструктор</span>
+              <span className="sm:hidden">Создать</span>
             </TabsTrigger>
-            <TabsTrigger value="my-bots" className="flex items-center gap-2 py-3">
-              <Icon name="Folder" size={18} />
-              <span>Мои боты</span>
+            <TabsTrigger value="my-bots" className="flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="Folder" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Мои боты</span>
+              <span className="sm:hidden">Мои</span>
             </TabsTrigger>
           </TabsList>
 
@@ -81,9 +84,9 @@ const Index = () => {
 
       <footer className="border-t bg-white/50 backdrop-blur-sm mt-16">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <p>© 2024 BotPlatform. Все права защищены.</p>
-            <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-xs md:text-sm text-muted-foreground">
+            <p className="text-center md:text-left">© 2024 BotPlatform. Все права защищены.</p>
+            <div className="flex gap-3 md:gap-4">
               <a href="#" className="hover:text-primary transition-colors">Помощь</a>
               <a href="#" className="hover:text-primary transition-colors">Документация</a>
               <a href="#" className="hover:text-primary transition-colors">Контакты</a>

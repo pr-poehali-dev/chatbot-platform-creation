@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -96,6 +97,7 @@ const mockBots: Bot[] = [
 const categories = ['Все', 'Продажи', 'Поддержка', 'HR', 'Маркетинг', 'Финансы', 'Сервис'];
 
 const BotMarketplace = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Все');
 
@@ -193,11 +195,20 @@ const BotMarketplace = () => {
                 </div>
               </div>
               <div className="w-full flex gap-2">
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => navigate(`/bot/${bot.id}`)}
+                >
                   <Icon name="Eye" size={16} className="mr-2" />
                   Подробнее
                 </Button>
-                <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90">
+                <Button 
+                  size="sm" 
+                  className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                  onClick={() => navigate('/pricing')}
+                >
                   <Icon name="ShoppingCart" size={16} className="mr-2" />
                   Купить
                 </Button>
