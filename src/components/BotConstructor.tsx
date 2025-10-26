@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import TelegramIntegration from '@/components/TelegramIntegration';
+import SocialMediaGuide from '@/components/SocialMediaGuide';
 
 interface ScenarioNode {
   id: string;
@@ -44,7 +45,7 @@ const BotConstructor = () => {
     setScenarios([...scenarios, newNode]);
   };
 
-  const handleCreateBot = () => {
+  const handleCreateBot = async () => {
     if (!botName || !botType || !platform) {
       toast({
         title: 'Ошибка',
@@ -54,10 +55,49 @@ const BotConstructor = () => {
       return;
     }
 
-    toast({
-      title: 'Бот создан!',
-      description: `Бот "${botName}" успешно создан и сохранен`,
-    });
+    try {
+      const response = await fetch('https://functions.poehali.dev/96b3f1ab-3e6d-476d-9886-020600efada2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: botName,
+          bot_type: botType,
+          platform: platform,
+          description: description,
+          scenarios: scenarios,
+          telegram_token: platform === 'telegram' ? '8059737467:AAEywpOOuZBvzCu35gSqZetsxgZzwULHCjc' : null,
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.bot) {
+        toast({
+          title: 'Бот создан!',
+          description: `Бот "${botName}" успешно создан и сохранен в базе данных`,
+        });
+        
+        setBotName('');
+        setBotType('');
+        setPlatform('');
+        setDescription('');
+        setScenarios([{ id: '1', type: 'start', title: 'Начало диалога' }]);
+      } else {
+        toast({
+          title: 'Ошибка',
+          description: data.error || 'Не удалось создать бота',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Проблема с подключением к серверу',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -272,6 +312,10 @@ const BotConstructor = () => {
             </Tabs>
           </CardContent>
         </Card>
+
+        <div className="mt-6">
+          <SocialMediaGuide />
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,43 @@ const mockMyBots: MyBot[] = [
 
 const MyBots = () => {
   const { toast } = useToast();
-  const [bots, setBots] = useState(mockMyBots);
+  const [bots, setBots] = useState<MyBot[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadBots();
+  }, []);
+
+  const loadBots = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('https://functions.poehali.dev/96b3f1ab-3e6d-476d-9886-020600efada2');
+      const data = await response.json();
+      
+      if (data.bots) {
+        const mappedBots: MyBot[] = data.bots.map((bot: any) => ({
+          id: bot.id,
+          name: bot.name,
+          type: bot.bot_type,
+          platform: bot.platform,
+          status: bot.status as 'active' | 'paused' | 'draft',
+          users: Math.floor(Math.random() * 500),
+          messages: Math.floor(Math.random() * 2000),
+          lastActive: bot.status === 'draft' ? 'Никогда' : '1 час назад',
+          performance: bot.status === 'draft' ? 0 : Math.floor(Math.random() * 40) + 60
+        }));
+        setBots(mappedBots);
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось загрузить список ботов',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -124,8 +160,24 @@ const MyBots = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        {bots.map((bot, index) => (
+      {loading ? (
+        <div className="text-center py-16">
+          <Icon name="Loader2" size={48} className="mx-auto text-muted-foreground mb-4 animate-spin" />
+          <p className="text-muted-foreground">Загрузка ботов...</p>
+        </div>
+      ) : bots.length === 0 ? (
+        <div className="text-center py-16">
+          <Icon name="Bot" size={64} className="mx-auto text-muted-foreground mb-4" />
+          <h3 className="text-xl font-semibold mb-2">У вас пока нет ботов</h3>
+          <p className="text-muted-foreground mb-6">Создайте своего первого ИИ-агента</p>
+          <Button size="lg" onClick={() => window.location.href = '/?tab=constructor'}>
+            <Icon name="Plus" size={18} className="mr-2" />
+            Создать первого бота
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {bots.map((bot, index) => (
           <Card 
             key={bot.id}
             className="hover:shadow-lg transition-all duration-300 animate-scale-in"
@@ -221,17 +273,6 @@ const MyBots = () => {
             </CardFooter>
           </Card>
         ))}
-      </div>
-
-      {bots.length === 0 && (
-        <div className="text-center py-16">
-          <Icon name="Bot" size={64} className="mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-xl font-semibold mb-2">У вас пока нет ботов</h3>
-          <p className="text-muted-foreground mb-6">Создайте своего первого ИИ-агента</p>
-          <Button size="lg">
-            <Icon name="Plus" size={18} className="mr-2" />
-            Создать первого бота
-          </Button>
         </div>
       )}
     </div>
