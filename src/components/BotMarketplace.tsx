@@ -1,21 +1,29 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mockBots } from './marketplace/mockBots';
 import { categories } from './marketplace/types';
 import BotCard from './marketplace/BotCard';
 import CategoryFilter from './marketplace/CategoryFilter';
 import SearchBar from './marketplace/SearchBar';
+import PriceFilter from './marketplace/PriceFilter';
+import RatingFilter from './marketplace/RatingFilter';
 
 const BotMarketplace = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('Все');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const maxPrice = useMemo(() => Math.max(...mockBots.map(bot => bot.price)), []);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
+  const [minRating, setMinRating] = useState(0);
 
   const filteredBots = mockBots.filter((bot) => {
     const matchesCategory = selectedCategory === 'Все' || bot.category === selectedCategory;
     const matchesSearch = bot.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          bot.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    const matchesPrice = bot.price >= priceRange[0] && bot.price <= priceRange[1];
+    const matchesRating = bot.rating >= minRating;
+    return matchesCategory && matchesSearch && matchesPrice && matchesRating;
   });
 
   const handleBuy = (id: number) => {
@@ -41,6 +49,18 @@ const BotMarketplace = () => {
         selectedCategory={selectedCategory} 
         onCategoryChange={setSelectedCategory} 
       />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <PriceFilter 
+          maxPrice={maxPrice}
+          priceRange={priceRange}
+          onPriceChange={setPriceRange}
+        />
+        <RatingFilter 
+          minRating={minRating}
+          onRatingChange={setMinRating}
+        />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {filteredBots.map((bot) => (
