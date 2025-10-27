@@ -5,6 +5,7 @@ import Icon from '@/components/ui/icon';
 import BotMarketplace from '@/components/BotMarketplace';
 import BotConstructor from '@/components/BotConstructor';
 import MyBots from '@/components/MyBots';
+import { Link } from 'react-router-dom';
 const Index = () => {
   const [activeTab, setActiveTab] = useState('marketplace');
 
@@ -25,6 +26,12 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Link to="/docs">
+                <Button variant="ghost" size="sm" className="hidden md:flex">
+                  <Icon name="BookOpen" size={18} className="mr-2" />
+                  <span className="hidden lg:inline">Документация</span>
+                </Button>
+              </Link>
               <Button variant="ghost" size="sm" className="hidden md:flex">
                 <Icon name="Bell" size={18} className="mr-2" />
                 <span className="hidden lg:inline">Уведомления</span>
