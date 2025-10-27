@@ -32,14 +32,18 @@ const Index = () => {
                   <span className="hidden lg:inline">Документация</span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" className="hidden md:flex">
-                <Icon name="Bell" size={18} className="mr-2" />
-                <span className="hidden lg:inline">Уведомления</span>
-              </Button>
-              <Button variant="outline" size="sm">
-                <Icon name="User" size={18} className="md:mr-2" />
-                <span className="hidden md:inline">Профиль</span>
-              </Button>
+              <Link to="/notifications">
+                <Button variant="ghost" size="sm" className="hidden md:flex">
+                  <Icon name="Bell" size={18} className="mr-2" />
+                  <span className="hidden lg:inline">Уведомления</span>
+                </Button>
+              </Link>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <Icon name="User" size={18} className="md:mr-2" />
+                  <span className="hidden md:inline">Профиль</span>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

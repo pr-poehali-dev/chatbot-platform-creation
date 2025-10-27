@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import BotDetails from "./pages/BotDetails";
 import Pricing from "./pages/Pricing";
+import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
 import Documentation from "./components/Documentation";
 import NotFound from "./pages/NotFound";
 
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/bot/:id" element={<BotDetails />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/docs" element={<Documentation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
