@@ -34,27 +34,22 @@ def send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
         return False
 
 
-def call_ai_chat(ai_model: str, prompt: str, message: str, ai_chat_url: str) -> Optional[str]:
-    """Call AI chat API to get intelligent response"""
+def call_ml_chat(bot_id: int, message: str, ml_chat_url: str) -> Optional[str]:
+    """Call ML chat API to get intelligent response based on training"""
     try:
-        messages = [
-            {"role": "system", "content": prompt},
-            {"role": "user", "content": message}
-        ]
-        
         data = json.dumps({
-            "messages": messages,
-            "model": ai_model
+            "bot_id": bot_id,
+            "message": message
         }).encode('utf-8')
         
         req = urllib.request.Request(
-            ai_chat_url,
+            ml_chat_url,
             data=data,
             headers={'Content-Type': 'application/json'},
             method='POST'
         )
         
-        with urllib.request.urlopen(req, timeout=10) as response:
+        with urllib.request.urlopen(req, timeout=5) as response:
             result = json.loads(response.read().decode('utf-8'))
             return result.get('content')
     except Exception:
@@ -157,8 +152,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             }
         
         bot_id = bot['id']
-        ai_model = bot.get('ai_model', 'deepseek')
-        ai_prompt = bot.get('ai_prompt') or 'Ты вежливый помощник. Отвечай кратко и по делу.'
         
         cur.execute(
             "INSERT INTO messages (bot_id, user_id, username, message_text) VALUES (%s, %s, %s, %s)",
@@ -166,8 +159,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         )
         conn.commit()
         
-        ai_chat_url = 'https://functions.poehali.dev/c2e48ecb-bb5d-44ec-8ac2-f56e7946f066'
-        response_text = call_ai_chat(ai_model, ai_prompt, message_text, ai_chat_url)
+        ml_chat_url = 'https://functions.poehali.dev/23f5dcaf-616d-4957-922d-ef9968ec1662'
+        response_text = call_ml_chat(bot_id, message_text, ml_chat_url)
         
         if not response_text:
             response_text = get_fallback_response(message_text)

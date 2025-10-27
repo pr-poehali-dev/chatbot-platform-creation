@@ -11,6 +11,7 @@ import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import TelegramIntegration from '@/components/TelegramIntegration';
 import SocialMediaGuide from '@/components/SocialMediaGuide';
+import BotTraining from '@/components/BotTraining';
 
 interface ScenarioNode {
   id: string;
@@ -255,10 +256,14 @@ const BotConstructor = () => {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="visual" className="w-full">
-              <TabsList className="grid w-full max-w-md grid-cols-2">
+              <TabsList className="grid w-full max-w-2xl grid-cols-3">
                 <TabsTrigger value="visual" className="text-xs md:text-sm">
                   <Icon name="Network" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
                   Визуально
+                </TabsTrigger>
+                <TabsTrigger value="training" className="text-xs md:text-sm">
+                  <Icon name="Brain" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
+                  Обучение
                 </TabsTrigger>
                 <TabsTrigger value="code" className="text-xs md:text-sm">
                   <Icon name="Code" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
@@ -348,6 +353,10 @@ const BotConstructor = () => {
                     )}
                   </div>
                 </div>
+              </TabsContent>
+
+              <TabsContent value="training" className="mt-6">
+                <BotTraining />
               </TabsContent>
 
               <TabsContent value="code" className="mt-6">
