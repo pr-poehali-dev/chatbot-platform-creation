@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import TelegramIntegration from '@/components/TelegramIntegration';
 import SocialMediaGuide from '@/components/SocialMediaGuide';
 import BotTraining from '@/components/BotTraining';
+import AITools from '@/components/AITools';
 
 interface ScenarioNode {
   id: string;
@@ -170,44 +171,17 @@ const BotConstructor = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="ai-model">Нейросеть *</Label>
-              <Select value={aiModel} onValueChange={setAiModel}>
-                <SelectTrigger id="ai-model">
-                  <SelectValue placeholder="Выберите нейросеть" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="deepseek">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs">Бесплатно</Badge>
-                      DeepSeek (быстрая)
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="groq">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs">Бесплатно</Badge>
-                      Groq Llama (очень быстрая)
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="openai">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">Платная</Badge>
-                      OpenAI GPT (умная)
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="ai-prompt">Промпт для ИИ</Label>
-              <Textarea
-                id="ai-prompt"
-                placeholder="Опишите как должен вести себя бот..."
-                value={aiPrompt}
-                onChange={(e) => setAiPrompt(e.target.value)}
-                rows={4}
-              />
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <Icon name="CheckCircle" size={18} className="text-green-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-green-900">
+                  <p className="font-semibold mb-1">Умный бот без API ключей!</p>
+                  <p className="text-xs">
+                    Бот использует встроенное машинное обучение и самообучается на диалогах.
+                    Никаких внешних сервисов не требуется.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <Button onClick={handleCreateBot} className="w-full" size="lg">
@@ -256,7 +230,7 @@ const BotConstructor = () => {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="visual" className="w-full">
-              <TabsList className="grid w-full max-w-2xl grid-cols-3">
+              <TabsList className="grid w-full max-w-3xl grid-cols-4">
                 <TabsTrigger value="visual" className="text-xs md:text-sm">
                   <Icon name="Network" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
                   Визуально
@@ -264,6 +238,10 @@ const BotConstructor = () => {
                 <TabsTrigger value="training" className="text-xs md:text-sm">
                   <Icon name="Brain" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
                   Обучение
+                </TabsTrigger>
+                <TabsTrigger value="ai-tools" className="text-xs md:text-sm">
+                  <Icon name="Sparkles" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
+                  AI Tools
                 </TabsTrigger>
                 <TabsTrigger value="code" className="text-xs md:text-sm">
                   <Icon name="Code" size={14} className="mr-1 md:mr-2 md:w-4 md:h-4" />
@@ -357,6 +335,10 @@ const BotConstructor = () => {
 
               <TabsContent value="training" className="mt-6">
                 <BotTraining />
+              </TabsContent>
+
+              <TabsContent value="ai-tools" className="mt-6">
+                <AITools />
               </TabsContent>
 
               <TabsContent value="code" className="mt-6">
