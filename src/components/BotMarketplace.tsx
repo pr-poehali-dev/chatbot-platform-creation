@@ -27,7 +27,7 @@ const BotMarketplace = () => {
   });
 
   const handleBuy = (id: number) => {
-    navigate(`/bot/${id}`);
+    navigate(`/bot/${id}?mode=buy`);
   };
 
   const handleRent = (id: number) => {

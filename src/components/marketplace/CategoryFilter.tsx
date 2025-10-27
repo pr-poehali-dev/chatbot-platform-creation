@@ -18,7 +18,8 @@ export default function CategoryFilter({ categories, selectedCategory, onCategor
               ? 'bg-gradient-to-r from-primary to-secondary hover:opacity-90 shadow-md'
               : 'hover:bg-accent hover:border-primary/50'
           }`}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             onCategoryChange(category);
           }}
         >

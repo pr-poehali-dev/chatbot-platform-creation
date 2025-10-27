@@ -3,11 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import BotMarketplace from '@/components/BotMarketplace';
-import BotConstructor from '@/components/BotConstructor';
-import MyBots from '@/components/MyBots';
 import { Link } from 'react-router-dom';
 const Index = () => {
   const [activeTab, setActiveTab] = useState('marketplace');
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white">
@@ -59,37 +61,48 @@ const Index = () => {
           </p>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-3 h-auto p-1">
-            <TabsTrigger value="marketplace" className="flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm">
-              <Icon name="Store" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Маркетплейс</span>
-              <span className="sm:hidden">Магазин</span>
-            </TabsTrigger>
-            <TabsTrigger value="constructor" className="flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm">
-              <Icon name="Boxes" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Конструктор</span>
-              <span className="sm:hidden">Создать</span>
-            </TabsTrigger>
-            <TabsTrigger value="my-bots" className="flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm">
-              <Icon name="Folder" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Мои боты</span>
-              <span className="sm:hidden">Мои</span>
-            </TabsTrigger>
-          </TabsList>
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+          <div className="flex-1">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
+              <div className="flex gap-2">
+                <TabsList className="flex-1 grid grid-cols-1 h-auto p-1">
+                  <TabsTrigger 
+                    value="marketplace" 
+                    className="flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm"
+                  >
+                    <Icon name="Store" size={16} className="md:w-[18px] md:h-[18px]" />
+                    <span className="hidden sm:inline">Маркетплейс</span>
+                    <span className="sm:hidden">Магазин</span>
+                  </TabsTrigger>
+                </TabsList>
+                
+                <Button
+                  variant={activeTab === 'constructor' ? 'default' : 'outline'}
+                  className="flex-1 flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm"
+                  onClick={() => window.open('/constructor', '_blank')}
+                >
+                  <Icon name="Boxes" size={16} className="md:w-[18px] md:h-[18px]" />
+                  <span className="hidden sm:inline">Конструктор</span>
+                  <span className="sm:hidden">Создать</span>
+                </Button>
 
-          <TabsContent value="marketplace" className="animate-fade-in">
-            <BotMarketplace />
-          </TabsContent>
+                <Button
+                  variant={activeTab === 'my-bots' ? 'default' : 'outline'}
+                  className="flex-1 flex items-center gap-1 md:gap-2 py-2 md:py-3 text-xs md:text-sm"
+                  onClick={() => window.open('/my-bots', '_blank')}
+                >
+                  <Icon name="Folder" size={16} className="md:w-[18px] md:h-[18px]" />
+                  <span className="hidden sm:inline">Мои боты</span>
+                  <span className="sm:hidden">Мои</span>
+                </Button>
+              </div>
 
-          <TabsContent value="constructor" className="animate-fade-in">
-            <BotConstructor />
-          </TabsContent>
-
-          <TabsContent value="my-bots" className="animate-fade-in">
-            <MyBots />
-          </TabsContent>
-        </Tabs>
+              <TabsContent value="marketplace" className="animate-fade-in">
+                <BotMarketplace />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </main>
 
       <footer className="border-t bg-white/50 backdrop-blur-sm mt-16">

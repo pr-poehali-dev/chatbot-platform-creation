@@ -46,6 +46,20 @@ const BotDetails = () => {
     });
   };
 
+  const handleSettings = () => {
+    toast({
+      title: 'Настройки бота',
+      description: 'Открытие панели настроек...',
+    });
+  };
+
+  const handleStart = () => {
+    toast({
+      title: 'Запуск бота',
+      description: 'Бот успешно запущен и готов к работе!',
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-white">
       <header className="border-b bg-white/80 backdrop-blur-lg sticky top-0 z-50">
@@ -56,11 +70,11 @@ const BotDetails = () => {
               Назад
             </Button>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleSettings}>
                 <Icon name="Settings" size={16} className="mr-2" />
                 <span className="hidden sm:inline">Настройки</span>
               </Button>
-              <Button size="sm">
+              <Button size="sm" onClick={handleStart}>
                 <Icon name="Play" size={16} className="mr-2" />
                 <span className="hidden sm:inline">Запустить</span>
               </Button>

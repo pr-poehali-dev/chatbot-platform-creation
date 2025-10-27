@@ -9,6 +9,8 @@ import BotDetails from "./pages/BotDetails";
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
+import Constructor from "./pages/Constructor";
+import MyBotsPage from "./pages/MyBotsPage";
 import Documentation from "./components/Documentation";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/constructor" element={<Constructor />} />
+          <Route path="/my-bots" element={<MyBotsPage />} />
           <Route path="/docs" element={<Documentation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
