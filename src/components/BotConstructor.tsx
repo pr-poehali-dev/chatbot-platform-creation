@@ -25,6 +25,8 @@ const BotConstructor = () => {
   const [botType, setBotType] = useState('');
   const [platform, setPlatform] = useState('');
   const [description, setDescription] = useState('');
+  const [aiModel, setAiModel] = useState('deepseek');
+  const [aiPrompt, setAiPrompt] = useState('Ты вежливый помощник. Отвечай кратко и по делу.');
   const [scenarios, setScenarios] = useState<ScenarioNode[]>([
     { id: '1', type: 'start', title: 'Начало диалога' }
   ]);
@@ -66,6 +68,8 @@ const BotConstructor = () => {
           bot_type: botType,
           platform: platform,
           description: description,
+          ai_model: aiModel,
+          ai_prompt: aiPrompt,
           scenarios: scenarios,
           telegram_token: platform === 'telegram' ? '8059737467:AAEywpOOuZBvzCu35gSqZetsxgZzwULHCjc' : null,
         })
@@ -83,6 +87,8 @@ const BotConstructor = () => {
         setBotType('');
         setPlatform('');
         setDescription('');
+        setAiModel('deepseek');
+        setAiPrompt('Ты вежливый помощник. Отвечай кратко и по делу.');
         setScenarios([{ id: '1', type: 'start', title: 'Начало диалога' }]);
       } else {
         toast({
@@ -160,6 +166,46 @@ const BotConstructor = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="ai-model">Нейросеть *</Label>
+              <Select value={aiModel} onValueChange={setAiModel}>
+                <SelectTrigger id="ai-model">
+                  <SelectValue placeholder="Выберите нейросеть" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="deepseek">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Бесплатно</Badge>
+                      DeepSeek (быстрая)
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="groq">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Бесплатно</Badge>
+                      Groq Llama (очень быстрая)
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="openai">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs">Платная</Badge>
+                      OpenAI GPT (умная)
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="ai-prompt">Промпт для ИИ</Label>
+              <Textarea
+                id="ai-prompt"
+                placeholder="Опишите как должен вести себя бот..."
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                rows={4}
               />
             </div>
 
