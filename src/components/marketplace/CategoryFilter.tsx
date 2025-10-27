@@ -13,12 +13,14 @@ export default function CategoryFilter({ categories, selectedCategory, onCategor
         <Badge
           key={category}
           variant={selectedCategory === category ? 'default' : 'outline'}
-          className={`cursor-pointer transition-all text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 ${
+          className={`cursor-pointer transition-all text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 select-none active:scale-95 ${
             selectedCategory === category
-              ? 'bg-gradient-to-r from-primary to-secondary hover:opacity-90'
-              : 'hover:bg-accent'
+              ? 'bg-gradient-to-r from-primary to-secondary hover:opacity-90 shadow-md'
+              : 'hover:bg-accent hover:border-primary/50'
           }`}
-          onClick={() => onCategoryChange(category)}
+          onClick={() => {
+            onCategoryChange(category);
+          }}
         >
           {category}
         </Badge>
