@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,11 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import TelegramIntegration from '@/components/TelegramIntegration';
+import BotSettingsModal from '@/components/modals/BotSettingsModal';
 
 const BotDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const analyticsData = {
     totalUsers: 1240,
@@ -47,10 +50,7 @@ const BotDetails = () => {
   };
 
   const handleSettings = () => {
-    toast({
-      title: 'Настройки бота',
-      description: 'Открытие панели настроек...',
-    });
+    setIsSettingsOpen(true);
   };
 
   const handleStart = () => {
@@ -383,6 +383,12 @@ const BotDetails = () => {
           </TabsContent>
         </Tabs>
       </main>
+      
+      <BotSettingsModal 
+        isOpen={isSettingsOpen} 
+        onClose={() => setIsSettingsOpen(false)} 
+        botName="Помощник продаж"
+      />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import CategoryFilter from './marketplace/CategoryFilter';
 import SearchBar from './marketplace/SearchBar';
 import PriceFilter from './marketplace/PriceFilter';
 import RatingFilter from './marketplace/RatingFilter';
+import PaymentModal from './modals/PaymentModal';
 
 const BotMarketplace = () => {
   const navigate = useNavigate();
@@ -16,6 +17,12 @@ const BotMarketplace = () => {
   const maxPrice = useMemo(() => Math.max(...mockBots.map(bot => bot.price)), []);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
   const [minRating, setMinRating] = useState(0);
+  
+  const [paymentModal, setPaymentModal] = useState<{ isOpen: boolean; botId: number; mode: 'buy' | 'rent' }>({ 
+    isOpen: false, 
+    botId: 0, 
+    mode: 'buy' 
+  });
 
   const filteredBots = mockBots.filter((bot) => {
     const matchesCategory = selectedCategory === 'Все' || bot.category === selectedCategory;
@@ -27,12 +34,14 @@ const BotMarketplace = () => {
   });
 
   const handleBuy = (id: number) => {
-    navigate(`/bot/${id}?mode=buy`);
+    setPaymentModal({ isOpen: true, botId: id, mode: 'buy' });
   };
 
   const handleRent = (id: number) => {
-    navigate(`/bot/${id}?mode=rent`);
+    setPaymentModal({ isOpen: true, botId: id, mode: 'rent' });
   };
+  
+  const selectedBot = mockBots.find(bot => bot.id === paymentModal.botId);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -79,6 +88,16 @@ const BotMarketplace = () => {
             Ботов не найдено. Попробуйте изменить фильтры.
           </p>
         </div>
+      )}
+      
+      {selectedBot && (
+        <PaymentModal
+          isOpen={paymentModal.isOpen}
+          onClose={() => setPaymentModal({ ...paymentModal, isOpen: false })}
+          botName={selectedBot.name}
+          mode={paymentModal.mode}
+          price={paymentModal.mode === 'buy' ? selectedBot.price : Math.floor(selectedBot.price / 10)}
+        />
       )}
     </div>
   );
