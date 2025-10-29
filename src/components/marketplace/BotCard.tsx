@@ -8,9 +8,11 @@ interface BotCardProps {
   bot: Bot;
   onBuy: (id: number) => void;
   onRent: (id: number) => void;
+  onDetails: (id: number) => void;
+  onTest: (id: number) => void;
 }
 
-export default function BotCard({ bot, onBuy, onRent }: BotCardProps) {
+export default function BotCard({ bot, onBuy, onRent, onDetails, onTest }: BotCardProps) {
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -70,22 +72,44 @@ export default function BotCard({ bot, onBuy, onRent }: BotCardProps) {
         </div>
       </CardContent>
 
-      <CardFooter className="relative gap-2 flex-col sm:flex-row">
-        <Button
-          variant="outline"
-          className="w-full group/btn"
-          onClick={() => onRent(bot.id)}
-        >
-          <Icon name="Clock" size={16} className="mr-2 group-hover/btn:rotate-12 transition-transform" />
-          Арендовать
-        </Button>
-        <Button
-          className="w-full group/btn bg-gradient-to-r from-primary to-secondary"
-          onClick={() => onBuy(bot.id)}
-        >
-          <Icon name="ShoppingCart" size={16} className="mr-2 group-hover/btn:scale-110 transition-transform" />
-          Купить
-        </Button>
+      <CardFooter className="relative gap-2 flex-col">
+        <div className="flex gap-2 w-full">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 group/btn"
+            onClick={() => onDetails(bot.id)}
+          >
+            <Icon name="Info" size={14} className="mr-1" />
+            Подробнее
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="flex-1 group/btn"
+            onClick={() => onTest(bot.id)}
+          >
+            <Icon name="PlayCircle" size={14} className="mr-1" />
+            Тест 3 дня
+          </Button>
+        </div>
+        <div className="flex gap-2 w-full">
+          <Button
+            variant="outline"
+            className="flex-1 group/btn"
+            onClick={() => onRent(bot.id)}
+          >
+            <Icon name="Clock" size={16} className="mr-1 group-hover/btn:rotate-12 transition-transform" />
+            Аренда
+          </Button>
+          <Button
+            className="flex-1 group/btn bg-gradient-to-r from-primary to-secondary"
+            onClick={() => onBuy(bot.id)}
+          >
+            <Icon name="ShoppingCart" size={16} className="mr-1 group-hover/btn:scale-110 transition-transform" />
+            Купить
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

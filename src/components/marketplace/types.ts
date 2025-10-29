@@ -9,6 +9,8 @@ export interface Bot {
   users: number;
   icon: string;
   features: string[];
+  fullDescription?: string;
+  functionality?: string[];
 }
 
 export const categories = ['Все', 'Продажи', 'Поддержка', 'HR', 'Маркетинг', 'Финансы', 'Сервис'];

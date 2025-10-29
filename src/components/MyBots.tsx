@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
+import { useActiveBots } from '@/contexts/ActiveBotsContext';
+import { mockBots } from './marketplace/mockBots';
 
 interface MyBot {
   id: number;
@@ -16,6 +18,8 @@ interface MyBot {
   messages: number;
   lastActive: string;
   performance: number;
+  testMode?: boolean;
+  daysLeft?: number;
 }
 
 const mockMyBots: MyBot[] = [
@@ -67,18 +71,38 @@ const mockMyBots: MyBot[] = [
 
 const MyBots = () => {
   const { toast } = useToast();
+  const { activeBots, deactivateBot } = useActiveBots();
   const [bots, setBots] = useState<MyBot[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadBots();
-  }, []);
+  }, [activeBots]);
 
   const loadBots = async () => {
     setLoading(true);
     try {
       const response = await fetch('https://functions.poehali.dev/96b3f1ab-3e6d-476d-9886-020600efada2');
       const data = await response.json();
+      
+      const activatedBots: MyBot[] = activeBots.map(activeBot => {
+        const templateBot = mockBots.find(b => b.id === activeBot.botId);
+        const daysLeft = Math.ceil((activeBot.expiresAt.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+        
+        return {
+          id: activeBot.botId,
+          name: activeBot.botName,
+          type: templateBot?.category || 'ИИ-агент',
+          platform: 'Telegram',
+          status: activeBot.status === 'active' ? 'active' : 'paused',
+          users: Math.floor(Math.random() * 100),
+          messages: Math.floor(Math.random() * 500),
+          lastActive: activeBot.status === 'active' ? 'Только что' : 'Тестовый период истек',
+          performance: activeBot.status === 'active' ? 85 : 0,
+          testMode: true,
+          daysLeft
+        };
+      });
       
       if (data.bots) {
         const mappedBots: MyBot[] = data.bots.map((bot: any) => ({
@@ -92,14 +116,30 @@ const MyBots = () => {
           lastActive: bot.status === 'draft' ? 'Никогда' : '1 час назад',
           performance: bot.status === 'draft' ? 0 : Math.floor(Math.random() * 40) + 60
         }));
-        setBots(mappedBots);
+        setBots([...activatedBots, ...mappedBots]);
+      } else {
+        setBots(activatedBots);
       }
     } catch (error) {
-      toast({
-        title: 'Ошибка',
-        description: 'Не удалось загрузить список ботов',
-        variant: 'destructive',
+      const activatedBots: MyBot[] = activeBots.map(activeBot => {
+        const templateBot = mockBots.find(b => b.id === activeBot.botId);
+        const daysLeft = Math.ceil((activeBot.expiresAt.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+        
+        return {
+          id: activeBot.botId,
+          name: activeBot.botName,
+          type: templateBot?.category || 'ИИ-агент',
+          platform: 'Telegram',
+          status: activeBot.status === 'active' ? 'active' : 'paused',
+          users: Math.floor(Math.random() * 100),
+          messages: Math.floor(Math.random() * 500),
+          lastActive: activeBot.status === 'active' ? 'Только что' : 'Тестовый период истек',
+          performance: activeBot.status === 'active' ? 85 : 0,
+          testMode: true,
+          daysLeft
+        };
       });
+      setBots(activatedBots);
     } finally {
       setLoading(false);
     }
@@ -194,6 +234,11 @@ const MyBots = () => {
                     <CardDescription className="mt-1">
                       {bot.type} • {bot.platform}
                     </CardDescription>
+                    {bot.testMode && bot.daysLeft && bot.daysLeft > 0 && (
+                      <Badge variant="secondary" className="mt-1 text-xs">
+                        Тест: {bot.daysLeft} {bot.daysLeft === 1 ? 'день' : bot.daysLeft < 5 ? 'дня' : 'дней'}
+                      </Badge>
+                    )}
                   </div>
                 </div>
                 {getStatusBadge(bot.status)}

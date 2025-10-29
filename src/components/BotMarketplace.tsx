@@ -8,6 +8,9 @@ import SearchBar from './marketplace/SearchBar';
 import PriceFilter from './marketplace/PriceFilter';
 import RatingFilter from './marketplace/RatingFilter';
 import PaymentModal from './modals/PaymentModal';
+import BotDetailsModal from './modals/BotDetailsModal';
+import { useToast } from '@/hooks/use-toast';
+import { useActiveBots } from '@/contexts/ActiveBotsContext';
 
 const BotMarketplace = () => {
   const navigate = useNavigate();
@@ -23,6 +26,14 @@ const BotMarketplace = () => {
     botId: 0, 
     mode: 'buy' 
   });
+  
+  const [detailsModal, setDetailsModal] = useState<{ isOpen: boolean; botId: number }>({ 
+    isOpen: false, 
+    botId: 0 
+  });
+  
+  const { toast } = useToast();
+  const { activateBot } = useActiveBots();
 
   const filteredBots = mockBots.filter((bot) => {
     const matchesCategory = selectedCategory === 'Все' || bot.category === selectedCategory;
@@ -39,6 +50,24 @@ const BotMarketplace = () => {
 
   const handleRent = (id: number) => {
     setPaymentModal({ isOpen: true, botId: id, mode: 'rent' });
+  };
+  
+  const handleDetails = (id: number) => {
+    setDetailsModal({ isOpen: true, botId: id });
+  };
+  
+  const handleTest = (id: number) => {
+    const bot = mockBots.find(b => b.id === id);
+    if (bot) {
+      activateBot(id, bot.name);
+      toast({
+        title: "Тестовый период активирован! 🎉",
+        description: `Бот "${bot.name}" доступен для тестирования 3 дня. Статус: Активен`,
+      });
+      setTimeout(() => {
+        navigate('/my-bots');
+      }, 1500);
+    }
   };
   
   const selectedBot = mockBots.find(bot => bot.id === paymentModal.botId);
@@ -77,7 +106,9 @@ const BotMarketplace = () => {
             key={bot.id} 
             bot={bot} 
             onBuy={handleBuy} 
-            onRent={handleRent} 
+            onRent={handleRent}
+            onDetails={handleDetails}
+            onTest={handleTest}
           />
         ))}
       </div>
@@ -99,6 +130,12 @@ const BotMarketplace = () => {
           price={paymentModal.mode === 'buy' ? selectedBot.price : Math.floor(selectedBot.price / 10)}
         />
       )}
+      
+      <BotDetailsModal
+        isOpen={detailsModal.isOpen}
+        onClose={() => setDetailsModal({ ...detailsModal, isOpen: false })}
+        bot={mockBots.find(b => b.id === detailsModal.botId)}
+      />
     </div>
   );
 };
